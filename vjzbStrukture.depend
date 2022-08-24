@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1661380211 source:c:\users\pc user\desktop\vjezba\vjzbstrukture\main.cpp
+	<iostream>
+	<cstring>
+	<fstream>
+	<cstdio>
+
+1661380984 source:c:\users\pc user\desktop\vjezba\registration\main.cpp
+	<iostream>
+	<cstring>
+	<fstream>
+	<cstdio>
+
