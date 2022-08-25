@@ -42,7 +42,8 @@ public:
         copyBaza.close();
         baza.close();
 
-        cout<<"Success! Name is changed from "<<ime<<" to -> "<<newName<<endl;
+        cout<<"Success! Name is changed from "<<ime<<" to -> "<<newName<<endl<<endl;
+        cout<<"-----------------------------"<<endl<<endl;
         ime=newName;
         remove("baza.txt");
         rename("copy.txt","baza.txt");
@@ -52,12 +53,11 @@ public:
         string pass,red;
         ifstream baza;
         ofstream copyBaza;
-        ponoviUpis:cout<<"Enter your new password : ";
+        upis:cout<<"Enter your new password : ";
         getline(cin,pass);
-        if(checkIfExists(pass)!="no"){
-            cout<<"This name already exist! Try new one"<<endl;
-            system("pause");
-            goto ponoviUpis;
+        if(checkIfExists(pass)=="tryAgain"){
+            cout<<"PASSWORD CAN'T BE BLANK"<<endl;
+            goto upis;
         }
         baza.open("baza.txt");
         copyBaza.open("copy.txt");
@@ -75,7 +75,8 @@ public:
         copyBaza.close();
         baza.close();
 
-        cout<<"Success! Password is changed from "<<sifra<<" to -> "<<pass<<endl;
+        cout<<"Success! Password is changed from "<<sifra<<" to -> "<<pass<<endl<<endl;
+        cout<<"-----------------------------"<<endl<<endl;
         sifra = pass;
         remove("baza.txt");
         rename("copy.txt","baza.txt");
@@ -87,9 +88,38 @@ public:
         cout<<"-----------------------------"<<endl<<endl;
         system("pause");
     }
+    void deleteAcc(){
+        string red;
+        ifstream baza;
+        ofstream copyBaza;
+        baza.open("baza.txt");
+        copyBaza.open("copy.txt");
+        while(!baza.eof()){
+
+                getline(baza,red);
+                if(red.substr(0,red.find(';'))==ime){
+                    continue;
+                }
+                else{
+                    copyBaza<<red<<"\n";
+                }
+
+        }
+        copyBaza.close();
+        baza.close();
+        cout<<"Success! Account Deleted"<<endl<<endl;
+        cout<<"-----------------------------"<<endl<<endl;
+        remove("baza.txt");
+        rename("copy.txt","baza.txt");
+        system("pause");
+    }
 };
 
 string checkIfExists(string name){
+
+    if(name.length()<1)
+            return "tryAgain";
+
     string red;
     ifstream baza;
     baza.open("baza.txt");
@@ -103,6 +133,7 @@ string checkIfExists(string name){
 
     }
     baza.close();
+
     return "no";
 }
 
@@ -115,7 +146,7 @@ Acc takeAccInfo(){
     cout<<endl<<"~~~~~~ REGISTARTION APPLICATION ~~~~~~"<<endl<<endl;
     cout<<"Do you have an account? (y/n) -> ";
     cin>>option;
-    option=tolower(option);
+    option = tolower(option);
     }while(option!='n' && option!='y');
     cin.ignore();
 
@@ -128,8 +159,7 @@ Acc takeAccInfo(){
             cout<<"Enter your name : ";
             getline(cin,name);
             userInfo = checkIfExists(name);
-            if(userInfo=="no"){
-                system("pause");
+            if(userInfo=="no" || userInfo=="tryAgain"){
                 goto upis;
             }
             cout<<"Enter your password : ";
@@ -153,8 +183,12 @@ Acc takeAccInfo(){
             if(userInfo!="no"){
                 goto ponovo;
             }
-            cout<<"Enter your password : ";
+            newPass:cout<<"Enter your password : ";
             getline(cin,pass);
+            if(pass.length()<1){
+                cout<<"PASSWORD CAN'T BE BLANK"<<endl;
+                goto newPass;
+            }
             baza.open("baza.txt",fstream::app);
             baza<<name<<";"<<pass<<"\n";
             baza.close();
@@ -178,10 +212,12 @@ void Menu(){
         cout<<"1.Print my info"<<endl;
         cout<<"2.Change name"<<endl;
         cout<<"3.Change password"<<endl;
+        cout<<"4.Delete account"<<endl;
+        cout<<"5.Log out"<<endl;
         cout<<"0.Exit"<<endl<<endl;
         cout<<"Enter number -> ";
         cin>>opt;
-        }while(opt<0 || opt>3);
+        }while(opt<0 || opt>5);
         cin.ignore();
         cout<<endl;
         cout<<"-----------------------------"<<endl<<endl;
@@ -189,8 +225,14 @@ void Menu(){
             case 1:user.printUserInfo();break;
             case 2:user.changeName();break;
             case 3:user.changePass();break;
+            case 4:user.deleteAcc();break;
+            case 5:takeAccInfo();break;
             case 0:break;
         }
+
+        if(opt==4)
+            opt=0;
+
     }while(opt!=0);
 }
 

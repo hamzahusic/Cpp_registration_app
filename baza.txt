@@ -1,6 +1,3 @@
-Hamza;1234
-
-
-
-
+Hamza;sifra
+Bakir;1234
 
