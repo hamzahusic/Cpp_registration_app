@@ -48,9 +48,38 @@ public:
         rename("copy.txt","baza.txt");
         system("pause");
     }
-    void changePass(string pass){
+    void changePass(){
+        string pass,red;
+        ifstream baza;
+        ofstream copyBaza;
+        ponoviUpis:cout<<"Enter your new password : ";
+        getline(cin,pass);
+        if(checkIfExists(pass)!="no"){
+            cout<<"This name already exist! Try new one"<<endl;
+            system("pause");
+            goto ponoviUpis;
+        }
+        baza.open("baza.txt");
+        copyBaza.open("copy.txt");
+        while(!baza.eof()){
+
+                getline(baza,red);
+                if(red.substr(0,red.find(';'))==ime){
+                    copyBaza<<ime<<";"<<pass<<"\n";
+                }
+                else{
+                    copyBaza<<red<<"\n";
+                }
+
+        }
+        copyBaza.close();
+        baza.close();
+
         cout<<"Success! Password is changed from "<<sifra<<" to -> "<<pass<<endl;
         sifra = pass;
+        remove("baza.txt");
+        rename("copy.txt","baza.txt");
+        system("pause");
     }
     void printUserInfo(){
         cout<<"Your name is -> "<<ime<<endl;
@@ -159,6 +188,7 @@ void Menu(){
         switch(opt){
             case 1:user.printUserInfo();break;
             case 2:user.changeName();break;
+            case 3:user.changePass();break;
             case 0:break;
         }
     }while(opt!=0);
