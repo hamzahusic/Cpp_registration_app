@@ -160,6 +160,8 @@ Acc takeAccInfo(){
             getline(cin,name);
             userInfo = checkIfExists(name);
             if(userInfo=="no" || userInfo=="tryAgain"){
+                cout<<"This user doesn't exist!"<<endl;
+                system("pause");
                 goto upis;
             }
             cout<<"Enter your password : ";
@@ -226,7 +228,7 @@ void Menu(){
             case 2:user.changeName();break;
             case 3:user.changePass();break;
             case 4:user.deleteAcc();break;
-            case 5:takeAccInfo();break;
+            case 5:user=takeAccInfo();break;
             case 0:break;
         }
 
